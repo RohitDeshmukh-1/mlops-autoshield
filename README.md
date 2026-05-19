@@ -19,6 +19,8 @@
 
 ## 1. Project Overview
 
+![Architecture Diagram](mlops_autoshield_architecture.svg)
+
 AutoShield is a **5-phase MLOps pipeline** that demonstrates production-grade ML engineering:
 
 | Phase | Component | What it does |
