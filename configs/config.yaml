@@ -1,0 +1,118 @@
+# ===== MLOps AutoShield Configuration =====
+
+project:
+  name: "autoshield"
+  version: "1.0.0"
+
+# ----- Data Layer -----
+data:
+  raw_path: "data/raw"
+  processed_path: "data/processed"
+  dataset_name: "credit_card_fraud"  # UCI Credit Card Fraud Detection
+  dataset_url: "https://raw.githubusercontent.com/dsrscientist/dataset1/master/creditcard.csv"
+  test_size: 0.2
+  random_state: 42
+  target_column: "Class"
+
+# ----- Feature Engineering -----
+features:
+  numeric_features:
+    - "V1"
+    - "V2"
+    - "V3"
+    - "V4"
+    - "V5"
+    - "V6"
+    - "V7"
+    - "V8"
+    - "V9"
+    - "V10"
+    - "V11"
+    - "V12"
+    - "V13"
+    - "V14"
+    - "V15"
+    - "V16"
+    - "V17"
+    - "V18"
+    - "V19"
+    - "V20"
+    - "V21"
+    - "V22"
+    - "V23"
+    - "V24"
+    - "V25"
+    - "V26"
+    - "V27"
+    - "V28"
+    - "Amount"
+  scaler: "standard"  # standard | minmax | robust
+
+# ----- Model Training -----
+model:
+  type: "xgboost"  # xgboost | random_forest | logistic_regression
+  save_path: "models"
+  params:
+    xgboost:
+      n_estimators: 100
+      max_depth: 6
+      learning_rate: 0.1
+      scale_pos_weight: 50  # Handle class imbalance
+      eval_metric: "aucpr"
+      random_state: 42
+    random_forest:
+      n_estimators: 100
+      max_depth: 10
+      random_state: 42
+    logistic_regression:
+      max_iter: 1000
+      random_state: 42
+
+# ----- MLflow -----
+mlflow:
+  tracking_uri: "mlruns"
+  experiment_name: "autoshield-credit-fraud"
+  registry_uri: "sqlite:///mlflow_registry.db"
+
+# ----- GenAI Agents -----
+agents:
+  llm:
+    provider: "groq"
+    model: "llama-3.3-70b-versatile"
+    temperature: 0.1
+    max_tokens: 2048
+  gate_agent:
+    min_accuracy: 0.85
+    min_precision: 0.70
+    min_recall: 0.60
+    min_f1: 0.65
+    max_latency_ms: 100
+  drift_agent:
+    psi_threshold: 0.2
+    ks_threshold: 0.05
+    check_interval_hours: 24
+  observability_agent:
+    alert_threshold: 0.1  # 10% degradation triggers alert
+
+# ----- Monitoring -----
+monitoring:
+  prometheus:
+    port: 8001
+    scrape_interval: 15
+  grafana:
+    port: 3000
+
+# ----- API Server -----
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  reload: true
+
+# ----- Drift Detection -----
+drift:
+  reference_data_path: "data/processed/reference.csv"
+  current_data_path: "data/processed/current.csv"
+  report_path: "reports/drift"
+  psi_threshold: 0.2
+  ks_alpha: 0.05

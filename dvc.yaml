@@ -1,0 +1,24 @@
+# DVC Pipeline — data versioning & reproducibility
+stages:
+  prepare:
+    cmd: python -m src.data.loader
+    deps:
+      - src/data/loader.py
+      - configs/config.yaml
+    outs:
+      - data/raw/creditcard.csv
+      - data/processed/processed.csv
+
+  train:
+    cmd: python -m src.pipeline
+    deps:
+      - src/models/trainer.py
+      - src/data/loader.py
+      - data/processed/processed.csv
+      - configs/config.yaml
+    outs:
+      - models/model.joblib
+      - models/scaler.joblib
+    metrics:
+      - reports/metrics.json:
+          cache: false

@@ -1,0 +1,45 @@
+# Byte-compiled
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# MLflow
+mlruns/
+mlflow_registry.db
+
+# Models (DVC tracked)
+models/*.joblib
+
+# Data (DVC tracked)
+data/raw/*.csv
+data/processed/*.csv
+
+# Reports
+reports/*.html
+reports/*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+
+# pytest
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Misc
+*.egg-info/
+dist/
+build/
